@@ -1,0 +1,1 @@
+#praca z terinalem wykonane na ter minalu :)
