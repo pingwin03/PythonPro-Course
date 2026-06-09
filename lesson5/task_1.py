@@ -3,17 +3,27 @@
 #"Nastolatek" (13-17), "Dorosły" (18-64), "Senior" (65+).
 
 
-wiek = int(input("Podaj swój wiek: "))
+while True:
+    try:
+        wiek = int(input("Podaj wiek: "))
+    except ValueError:
+        print("Błąd: wpisz poprawną liczbę całkowitą.")
+        continue
 
-if wiek >= 0 and wiek <= 1:
-    print("Niemowlę")
-elif wiek >= 2 and wiek <= 12:
-    print("Dziecko")
-elif wiek >= 13 and wiek <= 17:
-    print("Nastolatek")
-elif wiek >= 18 and wiek <= 64:
-    print("Dorosły")
-elif wiek >= 65:
-    print("Senior")
-else:
-    print("Podano nieprawidłowy wiek")
+    if wiek < 0:
+        print("Błąd: wiek nie może być ujemny.")
+    elif wiek <= 1:
+        print("Niemowlę")
+        break
+    elif wiek <= 12:
+        print("Dziecko")
+        break
+    elif wiek <= 17:
+        print("Nastolatek")
+        break
+    elif wiek <= 64:
+        print("Dorosły")
+        break
+    else:
+        print("Senior")
+        break
