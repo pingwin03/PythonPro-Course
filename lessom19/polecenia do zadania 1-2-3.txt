@@ -1,0 +1,38 @@
+Zadanie 1 – Instalacja i projekt
+
+
+NOWY KATALOG
+mkdir django_nauka
+cd django_nauka
+
+TWORZĘ I AKTYWUJĘ ŚRODOWISKO WIRTUALNE
+python -m venv .venv
+.venv\Scripts\activate
+
+INSTALUJE DJANGO
+pip install django
+
+TWORZĘ PROJEKT
+
+django-admin startproject mojastrona .
+
+
+Zadanie 2 – Uruchomienie serwera
+
+
+python manage.py runserver
+Starting development server at http://127.0.0.1:8000 - DZIAŁA
+
+Zadanie 3 – Tworzenie aplikacji
+
+python manage.py startapp ogloszenia
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'ogloszenia',  # Dodana aplikacja
+]

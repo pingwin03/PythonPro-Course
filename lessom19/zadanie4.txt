@@ -1,0 +1,13 @@
+
+kod z danymi fikcyjnymi do pliku mojastrona/settings.py
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql', # Informujemy Django o PostgreSQL
+        'NAME': 'baza_ogloszenia',                 # Fikcyjna nazwa bazy
+        'USER': 'admin_ogloszen',                  # Fikcyjny użytkownik
+        'PASSWORD': 'moje_super_haslo_123',        # Fikcyjne hasło
+        'HOST': 'localhost',                       # Serwer lokalny
+        'PORT': '5432',                            # Domyślny port Postgresa
+    }
+}
