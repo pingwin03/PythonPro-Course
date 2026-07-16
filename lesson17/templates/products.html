@@ -1,0 +1,38 @@
+<!-- Plik: templates/products.html -->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista produktów</title>
+    <style>
+        table, th, td {
+            border: 1px solid #333;
+            border-collapse: collapse;
+            padding: 10px;
+        }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+    <h1>Dostępne produkty z bazy danych</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nazwa produktu</th>
+                <th>Cena</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterujemy po liście obiektów przesłanych z Flaska -->
+            {% for product in products %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price }} zł</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

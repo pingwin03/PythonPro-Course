@@ -1,0 +1,24 @@
+<!-- Plik: templates/register.html -->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Rejestracja na wydarzenie</title>
+</head>
+<body>
+    <h1>Zapisz się na nasze wydarzenie</h1>
+    
+    <!-- Formularz wysyła dane metodą POST na ten sam adres URL -->
+    <form method="POST" action="/register">
+        <div style="margin-bottom: 10px;">
+            <label for="name">Imię i nazwisko:</label><br>
+            <input type="text" id="name" name="name" required style="padding: 5px; width: 250px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="email">Adres E-mail:</label><br>
+            <input type="email" id="email" name="email" required style="padding: 5px; width: 250px;">
+        </div>
+        <button type="submit" style="padding: 7px 15px; cursor: pointer;">Zarejestruj mnie</button>
+    </form>
+</body>
+</html>

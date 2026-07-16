@@ -1,0 +1,23 @@
+<!-- Plik: templates/movies.html -->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <!-- Zadanie 4: Użycie zmiennej przekazanej z Flaska w znaczniku <title> -->
+    <title>{{ page_title }}</title>
+</head>
+<body>
+    <h1>Moje ulubione filmy:</h1>
+    <ul>
+        <!-- Zadanie 3: Iteracja po liście filmów za pomocą pętli for silnika Jinja2 -->
+        {% for movie in movies %}
+            <!-- Zadanie 5: Wykorzystanie loop.index, aby co drugi element miał szare tło -->
+            {% if loop.index % 2 == 0 %}
+                <li style="background-color: #f0f0f0; padding: 5px;">{{ movie }}</li>
+            {% else %}
+                <li style="background-color: #ffffff; padding: 5px;">{{ movie }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</body>
+</html>

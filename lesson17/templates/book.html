@@ -1,0 +1,15 @@
+<!-- Plik: templates/book.html -->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Szczegóły książki</title>
+</head>
+<body>
+    <h1>Informacje o książce</h1>
+    <!-- Odwołujemy się do kluczy słownika za pomocą kropki (notacja Jinja2) -->
+    <h2>Tytuł: {{ book.title }}</h2>
+    <p><strong>Autor:</strong> {{ book.author }}</p>
+    <p><strong>Rok wydania:</strong> {{ book.year }}</p>
+</body>
+</html>
