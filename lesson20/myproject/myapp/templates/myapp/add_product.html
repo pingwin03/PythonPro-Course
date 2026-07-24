@@ -1,0 +1,19 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Dodaj produkt{% endblock %}
+
+{% block content %}
+    <h1>Dodaj nowy produkt</h1>
+    
+    <!-- method="POST" oznacza, że dane z formularza będą wysłane bezpiecznie do serwera -->
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- {{ form.as_p }} wygeneruje cały formularz i owinie każde pole w tagi paragrafu <p> -->
+        {{ form.as_p }}
+        
+        <button type="submit">Zapisz produkt</button>
+    </form>
+    <br>
+    <a href="/products/">Powrót do listy produktów</a>
+{% endblock %}

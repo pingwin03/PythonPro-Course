@@ -1,0 +1,33 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Lista notatek{% endblock %}
+
+{% block content %}
+    <h1>Wszystkie notatki</h1>
+    
+    <!-- Zwróć uwagę, że iterujemy teraz po 'page_obj' -->
+    <ul>
+        {% for note in page_obj %}
+            <!-- Zakładam, że masz tam linkowanie z poprzednich zadań, np. po ID -->
+            <li>{{ note.title }}</li> 
+        {% endfor %}
+    </ul>
+
+    <!-- Sekcja nawigacji paginacji -->
+    <div style="margin-top: 20px;">
+        <!-- Sprawdzamy, czy istnieje poprzednia strona -->
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">Poprzednia</a>
+        {% endif %}
+
+        <!-- Informacja o aktualnej stronie -->
+        <span style="margin: 0 10px;">
+            Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        <!-- Sprawdzamy, czy istnieje następna strona -->
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Następna</a>
+        {% endif %}
+    </div>
+{% endblock %}

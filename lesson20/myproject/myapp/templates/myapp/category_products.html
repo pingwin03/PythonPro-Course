@@ -1,0 +1,22 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Produkty z kategorii: {{ category.name }}{% endblock %}
+
+{% block content %}
+    <h1>Kategoria: {{ category.name }}</h1>
+    
+    <!-- Sprawdzamy, czy kategoria ma w ogóle jakieś produkty -->
+    {% if products %}
+        <ul>
+            {% for product in products %}
+                <!-- Zakładam, że model Product ma pole price, jeśli nie, możesz usunąć ten fragment -->
+                <li>{{ product.name }} - {{ product.price }} zł</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak produktów w tej kategorii.</p>
+    {% endif %}
+    
+    <br>
+    <a href="/products/">Powrót do wszystkich produktów</a>
+{% endblock %}
