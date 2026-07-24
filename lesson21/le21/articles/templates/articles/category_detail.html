@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ category.name }}</h1>
+    
+    <h3 class="mt-4">Artykuły w tej kategorii:</h3>
+    <ul>
+        <!-- Używamy relacji odwrotnej (article_set.all), aby pobrać artykuły -->
+        {% for article in category.article_set.all %}
+            <li>
+                <strong>{{ article.title }}</strong> - {{ article.content|truncatewords:5 }}
+            </li>
+        {% empty %}
+            <li>Brak artykułów w tej kategorii.</li>
+        {% endfor %}
+    </ul>
+    
+    <a href="/categories/" class="btn btn-secondary mt-3">Powrót do listy</a>
+{% endblock %}

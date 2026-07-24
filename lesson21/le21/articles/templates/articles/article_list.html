@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Lista Artykułów</h1>
+    
+    <!-- Formularz wyszukiwania -->
+    <form method="GET" action="" class="mt-4 mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Szukaj po tytule..." value="{{ search_query|default_if_none:'' }}">
+            <button class="btn btn-primary" type="submit">Szukaj</button>
+            
+            {% if search_query %}
+                <a href="/articles/" class="btn btn-outline-secondary">Wyczyść</a>
+            {% endif %}
+        </div>
+    </form>
+    
+    <!-- Lista artykułów -->
+    <ul class="list-group">
+        {% for article in articles %}
+            <li class="list-group-item">
+                <strong>{{ article.title }}</strong>
+                
+                {% if article.created_at >= three_days_ago %}
+                    <span class="badge bg-danger ms-2">NOWOŚĆ!</span>
+                {% endif %}
+                
+                <p class="mb-0 mt-2">{{ article.content|truncatewords:10 }}</p>
+            </li>
+        {% empty %}
+            <li class="list-group-item">Brak artykułów do wyświetlenia.</li>
+        {% endfor %}
+    </ul>
+    
+    <a href="/categories/" class="btn btn-secondary mt-3">Przejdź do kategorii</a>
+{% endblock %}

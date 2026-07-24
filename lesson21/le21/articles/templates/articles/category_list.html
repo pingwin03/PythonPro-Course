@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <!-- Link do pliku CSS -->
+    <link rel="stylesheet" href="{% static 'articles/style.css' %}">
+
+    <h1>Lista Kategorii</h1>
+    
+    {% if categories %}
+        <ul>
+            {% for category in categories %}
+                <li>{{ category.name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak kategorii w bazie.</p>
+    {% endif %}
+{% endblock %}
