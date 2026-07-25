@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Kategoria: {{ category.name }}</title>
+</head>
+<body>
+    <h1>Posty w kategorii: {{ category.name }}</h1>
+    
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <strong>{{ post.title }}</strong> 
+                    (Data: {{ post.publication_date|date:"d.m.Y" }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak postów w tej kategorii.</p>
+    {% endif %}
+</body>
+</html>
