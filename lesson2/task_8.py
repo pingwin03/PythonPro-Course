@@ -6,4 +6,11 @@
 #Utwórz wewnątrz pusty plik main.py poleceniem touch main.py .
 #Wyświetl zawartość folderu poleceniem ls 
 
-Nie robiliśmy tego jeszcze :)
+zrobię to w PowerShell nie mam  UBUNTU
+
+
+1. cd Desktop
+2.mkdir moj_pierwszy_projekt
+3. cd moj_pierwszy_projekt
+4. w PowerShell -   New-Item -ItemType File main.py
+6. dir

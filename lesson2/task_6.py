@@ -2,9 +2,16 @@
 #( tak/nie ) i ile ma lat. Wyświetl True , jeśli użytkownik ma 18 lat lub więcej ORAZ ma
 #prawo jazdy. W przeciwnym razie wyświetl False .
 
-prawko =  input("Czy masz prawo jazdy? (TAK/NIE): ")
-wiek = int(input("Ile masz lat? "))
+# Pobranie danych od użytkownika
+czy_ma_prawo_jazdy = input("Czy masz prawo jazdy? (tak/nie): ").strip().lower()
+wiek = int(input("Ile masz lat?: "))
 
-wynik = (wiek >=18) and (prawko == "tak")
 
+warunek_prawa_jazdy = czy_ma_prawo_jazdy == "tak"
+warunek_wieku = wiek >= 18
+
+# Ostateczny wynik (True, jeśli oba warunki są spełnione, w przeciwnym razie False)
+wynik = warunek_wieku and warunek_prawa_jazdy
+
+# Wyświetlenie rezultatu
 print(wynik)
