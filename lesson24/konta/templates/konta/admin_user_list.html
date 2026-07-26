@@ -1,0 +1,31 @@
+<!-- konta/templates/konta/admin_user_list.html -->
+{% extends "konta/base.html" %}
+{% block content %}
+<div class="content-section">
+    <h2>Panel Administratora – Lista Użytkowników</h2>
+    <p class="text-secondary">Widok dostępny wyłącznie dla personelu (is_staff = True).</p>
+    
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nazwa użytkownika</th>
+                <th>E-mail</th>
+                <th>Status Staff</th>
+                <th>Superużytkownik</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in users %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.email }}</td>
+                <td>{% if u.is_staff %}Tak{% else %}Nie{% endif %}</td>
+                <td>{% if u.is_superuser %}Tak{% else %}Nie{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

@@ -1,0 +1,16 @@
+<!-- konta/templates/konta/profile.html -->
+{% extends "konta/base.html" %}
+{% block content %}
+<div class="content-section">
+    <div class="media">
+        <div class="media-body">
+            <h2 class="account-heading">{{ user.username }}</h2>
+            <p class="text-secondary">E-mail: {{ user.email }}</p>
+        </div>
+    </div>
+    
+    <div class="border-top pt-3 mt-3">
+        <p><a href="{% url 'password_change' %}" class="btn btn-outline-secondary btn-sm">Zmień hasło</a></p>
+    </div>
+</div>
+{% endblock content %}
