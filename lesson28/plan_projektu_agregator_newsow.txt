@@ -1,0 +1,115 @@
+================================================================================
+                PLAN PROJEKTU: AGREGATOR NEWSÓW (CYBERBEZPIECZEŃSTWO)
+================================================================================
+
+Źródła danych:
+1. CERT Polska (cert.pl/aktualnosci)
+2. CSIRT GOV (csirt.gov.pl)
+
+--------------------------------------------------------------------------------
+I. PLAN BIZNESOWY (BUSINESS / PRODUCT)
+--------------------------------------------------------------------------------
+
+1. Discovery / Product Definition
+   Zbuduję prostą i szybką aplikację agregującą powiadomienia o cyberzagrożeniach. 
+   Produkt ma być wysoce użyteczny dla funkcjonariuszy Straży Granicznej, dlatego 
+   zadbam o bezbłędną logikę i rygorystyczną zgodność z celami projektu.
+
+2. Core Architecture Assumptions
+   Aplikacja będzie działać w przeglądarce, a jej głównym środowiskiem docelowym 
+   będą stanowiska desktopowe w placówkach SG.
+
+3. User Requirements (User Stories)
+   * Jako funkcjonariusz, chcę mieć dostęp do szybkiej listy newsów, aby znać 
+     bieżące wektory ataków.
+   * Jako redaktor/zgłaszający, chcę proponować własne artykuły poprzez formularz.
+   * Jako administrator, chcę akceptować prośby lub odrzucać je z obowiązkowym 
+     podaniem przyczyny.
+
+4. Functional Specification
+   Zaimplementuję mechanizm parsowania, który pobierze plakat, tytuł, opis, 
+   treść tekstową, obrazki i linki z serwisów cert.pl oraz csirt.gov.pl. System 
+   umożliwi również rejestrację użytkowników i przesyłanie zgłoszeń nowych 
+   artykułów do moderacji.
+
+5. User Flow Specification
+   Użytkownik uruchamia aplikację, loguje się, przegląda listę najnowszych zagrożeń, 
+   a po wejściu w dany news zyskuje dostęp do wszystkich szczegółów. Zakładka 
+   do zgłaszania artykułów poprowadzi go krok po kroku przez zwalidowany formularz.
+
+6. Non-Functional Requirements
+   System musi być stabilny, a interfejs szybko reagować na żądania. Każdy przypadek 
+   wyjątkowy, taki jak błędy parsowania źródła lub nieprawidłowe dane wpisane przez 
+   użytkownika, będzie precyzyjnie obsługiwany i zwróci odpowiedni status HTTP.
+
+7. Domain Model (Conceptual)
+   Logikę oprę na takich modelach jak: 
+   * User (z podziałem na role użytkownika i administratora), 
+   * Article (tytuł, treść, plakat, link, źródło),
+   * PublicationRequest (powiązanie z artykułem, status akceptacji, pole 
+     tekstowe na powód odrzucenia).
+
+8. Implementation Roadmap
+   Zacznę od MVP, czyli zbudowania skryptów parsowania i prostego wyświetlania 
+   danych, następnie wdrożę autoryzację i procesy moderacji dla administratora, 
+   a na końcu zabezpieczę całość testami i zamknę w środowisku kontenerowym.
+
+
+--------------------------------------------------------------------------------
+II. PLAN TECHNICZNY (TECHNICAL / ARCHITECTURE)
+--------------------------------------------------------------------------------
+
+9. Frontend Architecture & UI Foundation
+   Użyję frameworka Django, co idealnie sprawdzi się ze względu na wbudowany 
+   panel administratora do moderacji zgłoszeń oraz potężne wsparcie dla budowy API 
+   dzięki Django REST Framework. Aplikacja udostępni solidny fundament pod 
+   interfejs przeglądarkowy.
+
+10. Data Layer & Local Persistence
+    Do bezpiecznego przechowywania artykułów, danych użytkowników i wersjonowania 
+    powiadomień wykorzystam wydajny system relacyjnej bazy danych PostgreSQL.
+
+11. Search & Indexing System
+    Wdrożę wyszukiwanie pełnotekstowe (full-text search) opierające się na 
+    możliwościach PostgreSQL, aby funkcjonariusze mogli błyskawicznie filtrować 
+    alerty po słowach kluczowych i tagach.
+
+12. Sync Architecture (Cloud Layer)
+    Operacje wejścia/wyjścia, takie jak parsowanie obcych stron przez beautiful-soup 
+    i selenium, oddeleguję do zadań asynchronicznych działających w tle przy 
+    pomocy Celery i harmonogramu cron. Dzięki temu cykliczne pobieranie danych 
+    nie zablokuje interfejsu i głównego wątku serwera.
+
+13. Authentication & User Management
+    Zaimplementuję w pełni bezpieczną rejestrację i logowanie oparte na tokenach 
+    dostępu JWT (JSON Web Tokens).
+
+14. API Layer (Backend Contract)
+    Zbuduję zgodne z zasadami architektury REST API, udostępniające operacje 
+    CRUD dla artykułów i zgłoszeń. Zapewnię ścisłą walidację danych przed zapisem – 
+    każdy błąd zwróci czytelną odpowiedź z precyzyjnym komunikatem dla konkretnego 
+    pola oraz właściwym kodem statusu (np. 400, 403, 404).
+
+15. Performance & Optimization Strategy
+    Skupię się na czystości kodu: poprawnym nazewnictwie, zachowaniu zasad 
+    programowania obiektowego, komentarzach i adnotacjach typów. Zoptymalizuję 
+    zapytania do bazy danych wykorzystując mechanizmy takie jak select_related 
+    w Django ORM, co drastycznie zmniejszy liczbę zapytań pod spodem.
+
+16. Security Model
+    Zapewnię ścisłą separację uprawnień – administrator będzie miał wyłączne prawo 
+    do zmiany statusu publikacji, a wszystkie dane przesyłane w formularzach 
+    zostaną rygorystycznie przefiltrowane pod kątem złośliwego kodu.
+
+17. Deployment & Distribution Model
+    Całą infrastrukturę (aplikację Django, bazę PostgreSQL, workerów Celery 
+    oraz brokera Redis) uruchomię w wielokontenerowym środowisku przy użyciu 
+    Docker Compose, dbając o przejrzystą architekturę usług. Zadbam o wzorową 
+    historię commitów w systemie Git z podziałem na branche, przygotuję wyczerpujący 
+    plik README.md i umieszczę całość w repozytorium na moim koncie GitHub (pingwin03).
+
+18. Observability & Maintenance
+    Niezawodność całej logiki biznesowej potwierdzę bogatym zestawem testów 
+    jednostkowych i integracyjnych przy pomocy pytest (oraz fixtures). Przetestuję 
+    całą ścieżkę autoryzacji, proces tworzenia artykułów oraz odporność zadań 
+    asynchronicznych na ewentualne braki połączenia ze stronami rządowymi.
