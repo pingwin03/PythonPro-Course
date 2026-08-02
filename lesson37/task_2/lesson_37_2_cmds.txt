@@ -1,0 +1,26 @@
+# Upewniam się, że w moim katalogu głównym znajduje się plik .env (konfiguracja odseparowana od kodu).
+# Przykładowa zawartość, którą do niego wpisuję:
+# DEBUG=1
+# SECRET_KEY=moj-super-tajny-klucz-django
+
+# Buduję mój obraz Dockera, nadając mu nazwę (tag) "django-demo-env:v1". 
+# Kropka na końcu oznacza, że moim kontekstem budowania jest bieżący katalog.
+
+
+docker build -t django-demo-env:v1 .
+
+
+# Uruchamiam mój nowo zbudowany kontener w tle, korzystając z flagi -d.
+# Używam flagi --env-file, aby wstrzyknąć zmienne konfiguracyjne z mojego pliku .env bezpośrednio do działającego kontenera.
+# Mapuję port 8000 na hoście na port 8000 w kontenerze i nadaję mu nazwę "moje_django_z_env".
+
+
+docker run -d --name moje_django_z_env -p 8000:8000 --env-file .env django-demo-env:v1
+
+
+
+# Weryfikuję logi mojego kontenera, aby sprawdzić, czy aplikacja uruchomiła się pomyślnie z załadowanymi zmiennymi.
+
+
+
+docker logs -f moje_django_z_env

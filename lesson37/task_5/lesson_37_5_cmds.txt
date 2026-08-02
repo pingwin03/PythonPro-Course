@@ -1,0 +1,21 @@
+# 1. Odpalam całe moje środowisko wielokontenerowe i ukrywam je w tle.
+
+docker compose up -d
+
+# 2. Wykonuję migracje na mojej nowej bazie. Muszę to zrobić wewnątrz działającego kontenera aplikacji "backend".
+
+docker compose exec backend python manage.py migrate
+
+# 3. Aby sprawdzić, czy mój named volume działa poprawnie, zatrzymuję i usuwam kontenery.
+# Ważne: robię to komendą bez flagi -v. Moja sieć i kontenery znikną, ale dane na dysku zostaną nietknięte!
+
+docker compose down
+
+# 4. Ponownie uruchamiam kontenery z poziomu zrzuconego środowiska.
+
+docker compose up -d
+
+# 5. Jeszcze raz wykonuję komendę z migracjami. Jeśli wszystko ustawiłem dobrze, powinnam/powinienem 
+# zobaczyć "No migrations to apply". To oznacza, że tabele nadal istnieją i dane przetrwały!
+
+docker compose exec backend python manage.py migrate

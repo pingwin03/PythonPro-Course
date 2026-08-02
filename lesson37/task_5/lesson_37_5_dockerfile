@@ -1,0 +1,24 @@
+# Wybieram obraz bazowy Pythona w wersji slim, żeby mój kontener zajmował jak najmniej miejsca na dysku.
+FROM python:3.12-slim
+
+# Ustawiam mój główny katalog roboczy dla aplikacji.
+WORKDIR /app
+
+# Blokuję tworzenie plików .pyc i wyłączam buforowanie, żebym na bieżąco widział logi w terminalu.
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Kopiuję plik z zależnościami jako pierwszy, żeby sprytnie wykorzystać cache warstw Dockera.
+COPY requirements.txt .
+
+# Instaluję zależności. Pamiętam, że muszę mieć tu m.in. pakiet psycopg2-binary, żeby moje Django mogło połączyć się z PostgreSQL.
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Kopiuję resztę plików mojego projektu.
+COPY . .
+
+# Deklaruję, że mój kontener będzie nasłuchiwał na porcie 8000.
+EXPOSE 8000
+
+# Uruchamiam serwer Django, upewniając się, że nasłuchuje na wszystkich interfejsach (0.0.0.0).
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

@@ -1,0 +1,63 @@
+# ==========================================
+# ETAP 1: Budowanie (Builder)
+# ==========================================
+
+# Wybieram pełen obraz Pythona i nazywam ten etap "builder".
+# Robię to, ponieważ do zbudowania niektórych bibliotek (np. sterowników bazy danych) 
+# często potrzebuję systemowych narzędzi kompilacyjnych (jak gcc), które zajmują dużo miejsca.
+
+FROM python:3.12 AS builder
+
+# Ustawiam roboczy katalog kompilacji.
+
+WORKDIR /build
+
+# Kopiuję plik z wymaganiami.
+
+COPY requirements.txt .
+
+# Zamiast tradycyjnie instalować pakiety w systemie, buduję z nich archiwa typu "wheel" 
+# i wrzucam je do przygotowanego katalogu /build/wheels. 
+# Będą one gotowe do przeniesienia jako skompilowane, niezależne pliki.
+
+RUN pip wheel -r requirements.txt --wheel-dir /build/wheels
+
+
+# ==========================================
+# ETAP 2: Środowisko uruchomieniowe (Runtime)
+# ==========================================
+
+# Otwieram nowy etap. Tym razem wybieram wersję "slim" - odchudzoną, bez zbędnych narzędzi.
+# To ten obraz będzie faktycznie uruchamiany i wysyłany na serwer.
+
+FROM python:3.12-slim
+
+# Ustawiam mój docelowy katalog dla aplikacji.
+
+WORKDIR /app
+
+# Ustawiam standardowe zmienne środowiskowe dla Pythona.
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# To jest najważniejszy moment! Kopiuję z etapu "builder" WYŁĄCZNIE zbudowane pakiety wheel.
+# Cała reszta ciężkich kompilatorów i śmieci systemowych z pierwszego etapu zostaje porzucona.
+
+COPY --from=builder /build/wheels /wheels
+
+# Instaluję paczki bezpośrednio z plików wheel. Nie muszę ich już pobierać ani kompilować.
+
+RUN pip install --no-cache /wheels/*
+
+# Po zainstalowaniu zależności, kopiuję resztę kodu mojej aplikacji.
+
+COPY . .
+
+# Wystawiam port aplikacji.
+
+EXPOSE 8000
+
+# Definiuję komendę uruchamiającą mój serwer.
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

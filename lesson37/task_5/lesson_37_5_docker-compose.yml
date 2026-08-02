@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  backend:
+    # Wskazuję, że obraz ma się zbudować na podstawie mojego pliku Dockerfile z bieżącego katalogu.
+    build: .
+    container_name: moja_aplikacja_django
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      # Mapuję mój lokalny katalog na katalog /app wewnątrz kontenera. Dzięki temu będę widział zmiany w kodzie na żywo.
+      - .:/app
+    ports:
+      - "8000:8000"
+    # Ładuję zmienne z pliku .env, gdzie trzymam hasła i klucze.
+    env_file:
+      - .env
+    # Upewniam się, że Django odpali się dopiero wtedy, gdy uruchomi się baza danych i Redis.
+    depends_on:
+      - database
+      - redis
+    networks:
+      - moja_siec_projektowa
+
+  database:
+    # Wybieram gotowy obraz PostgreSQL.
+    image: postgres:16-alpine
+    container_name: moja_baza_postgres
+    environment:
+      # Ustawiam poświadczenia. W prawdziwym projekcie te wartości też wziąłbym z .env.
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      # Przypinam mój wolumen nazwany, żeby dane mojej bazy przetrwały ewentualne usunięcie kontenera.
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - moja_siec_projektowa
+
+  redis:
+    # Dodaję trzeci, opcjonalny kontener (np. do cache'owania czy Celery).
+    image: redis:7-alpine
+    container_name: moj_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - moja_siec_projektowa
+
+networks:
+  # Tworzę własną, wewnętrzną sieć (bridge), w której moje kontenery mogą się widzieć nawzajem.
+  moja_siec_projektowa:
+    driver: bridge
+
+volumes:
+  # Rejestruję wolumen nazwany dla moich danych z PostgreSQL.
+  postgres_data:

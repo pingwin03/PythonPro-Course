@@ -1,0 +1,33 @@
+# Wybieram oficjalny, odchudzony obraz Pythona 3.12 w wersji slim jako bazę dla mojej aplikacji.
+
+FROM python:3.12-slim
+
+# Ustawiam zmienne środowiskowe za pomocą instrukcji ENV.
+# Wyłączam buforowanie wyjścia Pythona oraz zapobiegam tworzeniu plików z kodem bajtowym (.pyc).
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Tworzę katalog /app i ustawiam go jako mój główny katalog roboczy wewnątrz kontenera.
+
+WORKDIR /app
+
+# Kopiuję plik z zależnościami jako osobny krok przed resztą kodu, aby optymalnie wykorzystać cache warstw Dockera.
+
+COPY requirements.txt .
+
+# Instaluję zależności bez tworzenia pamięci podręcznej pip (--no-cache-dir), aby zmniejszyć ostateczny rozmiar obrazu.
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Kopiuję całą resztę kodu źródłowego mojego projektu do katalogu /app w obrazie.
+
+COPY . .
+
+# Deklaruję port 8000, jako informację o tym, gdzie nasłuchuje moja aplikacja.
+
+EXPOSE 8000
+
+# Ustalam domyślną komendę uruchamiającą serwer deweloperski Django na wszystkich interfejsach (0.0.0.0).
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

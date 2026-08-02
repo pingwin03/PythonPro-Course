@@ -1,0 +1,8 @@
+# Uruchamiam prosty kontener z Memcached w tle (tryb detached).
+# Używam flagi -p, aby przekierować port 11211 z mojego hosta na port 11211 wewnątrz kontenera.
+
+
+docker run -d --name moj_memcached -p 11211:11211 memcached:alpine
+
+# Sprawdzam, czy mój kontener na pewno działa i weryfikuję zmapowane porty.
+docker ps

@@ -1,0 +1,30 @@
+# Wykluczam repozytorium Git, ponieważ historia moich commitów i gałęzi nie jest potrzebna do uruchomienia aplikacji w kontenerze. Kopiowanie tego folderu niepotrzebnie powiększyłoby kontekst budowania.
+.git/
+.gitignore
+
+# Pomijam moje lokalne środowiska wirtualne Pythona. Kontener to zupełnie osobny system (zazwyczaj oparty na Linuksie), więc ma swoje własne, odizolowane środowisko i pobiera pakiety na nowo na podstawie pliku requirements.txt.
+venv/
+.venv/
+env/
+
+# Bezwzględnie wykluczam plik ze zmiennymi środowiskowymi. Nie chcę, aby moje lokalne, tajne hasła czy klucz SECRET_KEY z Django zostały na stałe wklejone w warstwy zbudowanego obrazu.
+.env
+
+# Pomijam pliki z kodem bajtowym Pythona oraz katalogi cache. Zostaną one wygenerowane na nowo wewnątrz kontenera.
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Wykluczam moją lokalną bazę SQLite. W profesjonalnym środowisku Dockera (szczególnie w kolejnych zadaniach) i tak będę korzystać z osobnego kontenera bazy danych, takiego jak PostgreSQL.
+db.sqlite3
+db.sqlite3-journal
+
+# Nie wysyłam do kontenera ustawień mojego lokalnego środowiska programistycznego i edytora kodu.
+.vscode/
+.idea/
+
+# Wykluczam pliki i foldery związane z testami (np. generowane przez pytest), aby finalny obraz był jak najlżejszy.
+.pytest_cache/
+.coverage
+htmlcov/
