@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analiza AI w Celery</title>
+</head>
+<body style="font-family: sans-serif; padding: 20px;">
+    <h2>Wgraj obrazek do analizy</h2>
+    
+    <!-- Pamiętam o enctype="multipart/form-data" przy przesyłaniu plików! -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Wgraj i przeanalizuj</button>
+    </form>
+
+    <hr>
+    <h3>Historia obrazków:</h3>
+    <ul>
+        {% for img in images %}
+            <li style="margin-bottom: 10px;">
+                <strong>Obraz #{{ img.id }}</strong> 
+                (<a href="{{ img.image.url }}" target="_blank">podgląd</a>) <br>
+                Wynik klasyfikacji: 
+                {% if img.classification_result %}
+                    <span style="color: green;">{{ img.classification_result }}</span>
+                {% else %}
+                    <span style="color: orange;">Oczekuje na wynik od Celery... (odśwież stronę za chwilę)</span>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>Brak obrazków.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
